@@ -2,7 +2,8 @@ from tkinter import *
 import random as r
 
 
-startWindow = Tk()
+mainWindow = Tk()
+mainWindow.geometry("600x600")
 cardDeck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 cards = []
 
@@ -11,15 +12,11 @@ class Player:
         self.hand = hand
         
     def startGame(self):
-        mainWindow = Tk()
-        mainWindow.geometry("600x600")
-        startWindow.destroy()
         hitButton = Button(mainWindow, text="Hit", command=player1.hit)
         hitButton.pack()
         playerCardLabel = Label(mainWindow, text="0")
         playerCardLabel.pack()
-        mainWindow.mainloop()
-        
+        startGameButton.destroy()
         deck = cardDeck
         for e in range(2):
             card = r.choice(deck)
@@ -49,8 +46,8 @@ class Dealer(Player):
     pass
 
 player1 = Player()
-startGameButton = Button(startWindow, text="Start Game", command=player1.startGame)
+startGameButton = Button(mainWindow, text="Deal", command=player1.startGame)
 startGameButton.pack()
 
 if __name__ == '__main__':
-    startWindow.mainloop()
+    mainWindow.mainloop()
