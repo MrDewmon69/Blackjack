@@ -1,2 +1,3 @@
 # Blackjack
- A Python Blackjack Game
+
+A Simple Python Blackjack Game that uses defualt modules.

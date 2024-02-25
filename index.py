@@ -1,9 +1,9 @@
 from tkinter import *
 import random as r
 
-
 mainWindow = Tk()
 mainWindow.geometry("600x600")
+mainWindow.title("Blackjack")
 cardDeck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 cards = []
 
@@ -12,11 +12,15 @@ class Player:
         self.hand = hand
         
     def startGame(self):
+        global hitButton
         hitButton = Button(mainWindow, text="Hit", command=player1.hit)
         hitButton.pack()
-        playerCardLabel = Label(mainWindow, text="0")
-        playerCardLabel.pack()
+
+        global standButton
+        standButton = Button(mainWindow, text="Stand", command=player1.stand)
+        standButton.pack()
         startGameButton.destroy()
+
         deck = cardDeck
         for e in range(2):
             card = r.choice(deck)
@@ -33,21 +37,40 @@ class Player:
         playerCards = player1.hand
         newCard = r.choice(cardDeck)
         playerCards.append(newCard)
+        convertedList = str(playerCards)
+        playerCardLabel["text"] = convertedList
 
         print(playerCards)
 
         if sum(playerCards) > 21:
-            print("Bust")
+            loserLabel = Label(mainWindow, text="You busted")
+            loserLabel.pack()
 
     def stand(self):
-        pass
+        global hitButton
+        hitButton.destroy()
+        global standButton
+        standButton.destroy()
 
-class Dealer(Player):
-    pass
+class Dealer:
+    def __init__(self, *hand):
+        self.hand = hand
+
+    def deal(self):
+        dealerCards = []
+        dealerFirstCard = r.choice(cardDeck)
+        dealerCards.append(dealerFirstCard)
+        dealer.hand = dealerCards
+        print(dealerCards)
 
 player1 = Player()
+dealer = Dealer()
+dealer.deal()
+
 startGameButton = Button(mainWindow, text="Deal", command=player1.startGame)
 startGameButton.pack()
+playerCardLabel = Label(mainWindow, text="0")
+playerCardLabel.pack()
 
 if __name__ == '__main__':
     mainWindow.mainloop()
