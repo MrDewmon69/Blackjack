@@ -31,6 +31,8 @@ class Player:
         convertedList = str(player1.hand)
         playerCardLabel["text"] = convertedList
 
+        
+
     def hit(self):
         global playerCards
         print(player1.hand)
@@ -61,7 +63,7 @@ class Player:
             dealerLabel["text"] = dealerCards
 
         if sum(dealerCards) > 21:
-            dealerBustLabel["text"] = "Dealer Busts"
+            dealerBustLabel["text"] = "Dealer Busts, You win"
         elif sum(dealerCards) > sum(cards):
             dealerBustLabel["text"] = "Dealer Wins"
         elif sum(dealerCards) < sum(cards):
@@ -94,6 +96,8 @@ startGameButton = Button(mainWindow, text="Deal", command=player1.startGame)
 startGameButton.grid(row=1, column=3)
 playerCardLabel = Label(mainWindow, text="0")
 playerCardLabel.grid(row=2, column=3)
+playerLabel = Label(mainWindow, text="Player Cards")
+playerLabel.grid(row=2, column=2)
 
 if __name__ == '__main__':
     mainWindow.mainloop()
