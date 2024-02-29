@@ -12,6 +12,7 @@ class Player:
         self.balance = balance
         
     def startGame(self):
+        global playerBet
         playerBet = betEntry.get()
         if not playerBet:
             print("Player bet not found")
@@ -37,8 +38,6 @@ class Player:
                 convertedList = str(player1.hand)
                 playerCardLabel["text"] = convertedList
 
-       
-
     def hit(self):
         global playerCards
         playerCards = player1.hand
@@ -54,7 +53,7 @@ class Player:
             standButton.destroy()
 
     def stand(self):
-        global dealerLabel, dealerCards
+        global dealerLabel, dealerCards, playerBet
         dealerBustLabel = Label(mainWindow, text="Game in progress")
         dealerBustLabel.grid(row=5, column=2) 
         hitButton.destroy()
@@ -67,11 +66,15 @@ class Player:
 
         if sum(dealerCards) > 21:
             dealerBustLabel["text"] = "Dealer Busts, You win"
+            player1.balance += playerBet
         elif sum(dealerCards) > sum(cards):
             dealerBustLabel["text"] = "Dealer Wins"
+            player1.balance -= playerBet
         elif sum(dealerCards) < sum(cards):
             dealerBustLabel["text"] = "Player Wins"
+            player1.balance += playerBet
         elif sum(dealerCards) == sum(cards):
+            player1.balance += playerBet
             dealerBustLabel["text"] = "Draw"
 
 class Dealer:
