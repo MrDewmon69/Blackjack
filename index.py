@@ -2,47 +2,50 @@ from tkinter import *
 import random as r
 
 mainWindow = Tk()
-mainWindow.geometry("600x600")
 mainWindow.title("Blackjack")
 cardDeck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 cards = []
 
 class Player:
-    def __init__(self, *hand) -> None:
+    def __init__(self, *hand, balance) -> None:
         self.hand = hand
+        self.balance = balance
         
     def startGame(self):
-        global hitButton, standButton, dealerLabel, dealerCards
-        hitButton = Button(mainWindow, text="Hit", command=player1.hit)
-        hitButton.grid(row=1, column=3)
+        playerBet = betEntry.get()
+        if not playerBet:
+            print("Player bet not found")
+        elif playerBet:
+            if int(playerBet) > int(player1.balance):
+                print("Not engouh money")
+            elif int(playerBet) <= int(player1.balance):
+                print("You have engouh money")
 
-        standButton = Button(mainWindow, text="Stand", command=player1.stand)
-        standButton.grid(row=1, column=2)
-        startGameButton.destroy()
+                global hitButton, standButton, dealerLabel, dealerCards
+                hitButton = Button(mainWindow, text="Hit", command=player1.hit)
+                hitButton.grid(row=1, column=3)
 
-        deck = cardDeck
-        for e in range(2):
-            card = r.choice(deck)
-            cards.append(card)
-        dealerLabel["text"] = dealerCards
-        player1.hand = cards
-        cardTotal = cards[0] + cards[1]
-        print(cardTotal)
-        convertedList = str(player1.hand)
-        playerCardLabel["text"] = convertedList
+                standButton = Button(mainWindow, text="Stand", command=player1.stand)
+                standButton.grid(row=1, column=2)
+                startGameButton.destroy()
 
-        
+                for e in range(2):
+                    card = r.choice(cardDeck)
+                    cards.append(card)
+                dealerLabel["text"] = dealerCards
+                player1.hand = cards
+                convertedList = str(player1.hand)
+                playerCardLabel["text"] = convertedList
+
+       
 
     def hit(self):
         global playerCards
-        print(player1.hand)
         playerCards = player1.hand
         newCard = r.choice(cardDeck)
         playerCards.append(newCard)
         convertedList = str(playerCards)
         playerCardLabel["text"] = convertedList
-
-        print(playerCards)
 
         if sum(playerCards) > 21:
             loserLabel = Label(mainWindow, text="You busted")
@@ -81,14 +84,13 @@ class Dealer:
         dealerFirstCard = r.choice(cardDeck)
         dealerCards.append(dealerFirstCard)
         dealer.hand = dealerCards
-        print(dealerCards)
 
         dealerText = Label(mainWindow, text="Dealer's Cards: ")
         dealerText.grid(row=4, column=2, columnspan=1)
         dealerLabel = Label(mainWindow, text="0")
         dealerLabel.grid(row=4, column=3)
         
-player1 = Player()
+player1 = Player(balance=1000)
 dealer = Dealer()
 dealer.deal()
 
@@ -98,6 +100,10 @@ playerCardLabel = Label(mainWindow, text="0")
 playerCardLabel.grid(row=2, column=3)
 playerLabel = Label(mainWindow, text="Player Cards")
 playerLabel.grid(row=2, column=2)
+betEntry = Entry(mainWindow)
+betEntry.grid(row=2, column=5)
+betEntryLabel = Label(mainWindow, text="Bet: ")
+betEntryLabel.grid(row=2, column=4)
 
 if __name__ == '__main__':
     mainWindow.mainloop()
