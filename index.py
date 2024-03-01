@@ -80,7 +80,7 @@ class Player:
         newGameButton.grid(row=5, column=3)
     
     def newGame(self):
-        global mainWindow, player1, dealer, startGameButton, playerCardLabel, betEntry, playerBal, dealerLabel
+        global mainWindow, player1, dealer, startGameButton, playerCardLabel, betEntry, playerBal, dealerLabel, cards
         # Destroy the current mainWindow
         mainWindow.destroy()
 
@@ -92,7 +92,7 @@ class Player:
         #player1 = Player(balance=1000)
         dealer = Dealer()
         dealer.deal()
-
+        cards = []
         startGameButton = Button(mainWindow, text="Deal", command=player1.startGame)
         startGameButton.grid(row=1, column=3)
         playerCardLabel = Label(mainWindow, text="0")
