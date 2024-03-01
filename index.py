@@ -21,7 +21,6 @@ class Player:
                 print("Not engouh money")
             elif int(playerBet) <= int(player1.balance):
                 print("You have engouh money")
-
                 global hitButton, standButton, dealerLabel, dealerCards
                 hitButton = Button(mainWindow, text="Hit", command=player1.hit)
                 hitButton.grid(row=1, column=3)
@@ -66,16 +65,48 @@ class Player:
 
         if sum(dealerCards) > 21:
             dealerBustLabel["text"] = "Dealer Busts, You win"
-            player1.balance += playerBet
+            player1.balance += int(playerBet)
         elif sum(dealerCards) > sum(cards):
             dealerBustLabel["text"] = "Dealer Wins"
-            player1.balance -= playerBet
+            player1.balance -= int(playerBet)
         elif sum(dealerCards) < sum(cards):
             dealerBustLabel["text"] = "Player Wins"
-            player1.balance += playerBet
+            player1.balance += int(playerBet)
         elif sum(dealerCards) == sum(cards):
-            player1.balance += playerBet
+            player1.balance += int(playerBet)
             dealerBustLabel["text"] = "Draw"
+        playerBal["text"] = player1.balance
+        newGameButton = Button(mainWindow, text="Play again?", command=player1.newGame)
+        newGameButton.grid(row=5, column=3)
+    
+    def newGame(self):
+        global mainWindow, player1, dealer, startGameButton, playerCardLabel, betEntry, playerBal, dealerLabel
+        # Destroy the current mainWindow
+        mainWindow.destroy()
+
+        # Create a new instance of Tkinter window
+        mainWindow = Tk()
+        mainWindow.title("Blackjack")
+
+        # Reinitialize all widgets and game components
+        #player1 = Player(balance=1000)
+        dealer = Dealer()
+        dealer.deal()
+
+        startGameButton = Button(mainWindow, text="Deal", command=player1.startGame)
+        startGameButton.grid(row=1, column=3)
+        playerCardLabel = Label(mainWindow, text="0")
+        playerCardLabel.grid(row=2, column=3)
+        playerLabel = Label(mainWindow, text="Player Cards")
+        playerLabel.grid(row=2, column=2)
+        betEntry = Entry(mainWindow)
+        betEntry.grid(row=2, column=5)
+        betEntryLabel = Label(mainWindow, text="Bet: ")
+        betEntryLabel.grid(row=2, column=4)
+        playerBalLabel = Label(mainWindow, text="Balance: ")
+        playerBalLabel.grid(row=2, column=6)
+        playerBal = Label(mainWindow, text=str(player1.balance))
+        playerBal.grid(row=2, column=7)
 
 class Dealer:
     def __init__(self, *hand):
@@ -87,7 +118,6 @@ class Dealer:
         dealerFirstCard = r.choice(cardDeck)
         dealerCards.append(dealerFirstCard)
         dealer.hand = dealerCards
-
         dealerText = Label(mainWindow, text="Dealer's Cards: ")
         dealerText.grid(row=4, column=2, columnspan=1)
         dealerLabel = Label(mainWindow, text="0")
@@ -107,6 +137,10 @@ betEntry = Entry(mainWindow)
 betEntry.grid(row=2, column=5)
 betEntryLabel = Label(mainWindow, text="Bet: ")
 betEntryLabel.grid(row=2, column=4)
+playerBalLabel = Label(mainWindow, text="Balance: ")
+playerBalLabel.grid(row=2, column=6)
+playerBal = Label(mainWindow, text=str(player1.balance))
+playerBal.grid(row=2, column=7)
 
 if __name__ == '__main__':
     mainWindow.mainloop()
